@@ -1,0 +1,6 @@
+.venv/
+lingo.egg-info/
+
+.env
+
+facebook.ipynb
