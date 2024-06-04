@@ -25,7 +25,9 @@ class DeepLTranslateAPI(AbstractAPI):
     def __init__(self, **kwargs) -> None:
         self.endpoint = os.getenv("DEEPL_ENDPOINT", None)
         self.auth_key = os.getenv("DEEPL_AUTH_KEY")
-        self.translator = deepl.Translator(self.auth_key, server_url=self.endpoint)
+        self.translator = deepl.Translator(
+            "32369d4c-67c6-efbe-4202-d63e9e7d07c6", server_url=self.endpoint
+        )
 
     def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:
         result = self.translator.translate_text(query, target_lang=tgt_lan)

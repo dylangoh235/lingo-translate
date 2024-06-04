@@ -19,6 +19,8 @@ anyio==4.3.0
     #   httpx
     #   langchain-core
     #   openai
+    #   starlette
+    #   watchfiles
 astroid==3.1.0
     # via pylint
 asttokens==2.4.1
@@ -35,7 +37,10 @@ certifi==2024.2.2
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
-    # via nltk
+    # via
+    #   nltk
+    #   typer
+    #   uvicorn
 comm==0.2.2
     # via ipywidgets
 contourpy==1.2.1
@@ -58,12 +63,22 @@ dill==0.3.7
     #   evaluate
     #   multiprocess
     #   pylint
+diskcache==5.6.3
+    # via llama-cpp-python
 distro==1.9.0
     # via openai
+dnspython==2.6.1
+    # via email-validator
+email-validator==2.1.1
+    # via fastapi
 evaluate==0.4.1
     # via lingo (pyproject.toml)
 executing==2.0.1
     # via stack-data
+fastapi==0.111.0
+    # via lingo (pyproject.toml)
+fastapi-cli==0.0.4
+    # via fastapi
 filelock==3.13.4
     # via
     #   huggingface-hub
@@ -105,11 +120,17 @@ grpcio==1.62.2
 grpcio-status==1.62.2
     # via google-api-core
 h11==0.14.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
 httpcore==1.0.5
     # via httpx
+httptools==0.6.1
+    # via uvicorn
 httpx==0.27.0
-    # via openai
+    # via
+    #   fastapi
+    #   openai
 huggingface-hub==0.22.2
     # via
     #   datasets
@@ -119,6 +140,7 @@ huggingface-hub==0.22.2
 idna==3.6
     # via
     #   anyio
+    #   email-validator
     #   httpx
     #   requests
     #   yarl
@@ -131,7 +153,10 @@ isort==5.13.2
 jedi==0.19.1
     # via ipython
 jinja2==3.1.3
-    # via torch
+    # via
+    #   fastapi
+    #   llama-cpp-python
+    #   torch
 joblib==1.4.0
     # via nltk
 jsonpatch==1.33
@@ -160,6 +185,10 @@ langsmith==0.1.28
     #   langchain
     #   langchain-community
     #   langchain-core
+llama-cpp-python==0.2.77
+    # via lingo (pyproject.toml)
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==2.1.5
     # via jinja2
 marshmallow==3.21.1
@@ -170,6 +199,8 @@ matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via pylint
+mdurl==0.1.2
+    # via markdown-it-py
 mpmath==1.3.0
     # via sympy
 multidict==6.0.5
@@ -193,15 +224,19 @@ numpy==1.26.4
     #   evaluate
     #   langchain
     #   langchain-community
+    #   llama-cpp-python
     #   matplotlib
     #   pandas
     #   pyarrow
+    #   scipy
     #   torchvision
     #   transformers
 openai==1.25.0
     # via lingo (pyproject.toml)
 orjson==3.9.15
-    # via langsmith
+    # via
+    #   fastapi
+    #   langsmith
 packaging==23.2
     # via
     #   datasets
@@ -252,6 +287,7 @@ pyasn1-modules==0.4.0
     # via google-auth
 pydantic==2.6.4
     # via
+    #   fastapi
     #   langchain
     #   langchain-core
     #   langsmith
@@ -259,7 +295,9 @@ pydantic==2.6.4
 pydantic-core==2.16.3
     # via pydantic
 pygments==2.17.2
-    # via ipython
+    # via
+    #   ipython
+    #   rich
 pylint==3.1.0
     # via lingo (pyproject.toml)
 pyparsing==3.1.2
@@ -269,7 +307,11 @@ python-dateutil==2.9.0.post0
     #   matplotlib
     #   pandas
 python-dotenv==1.0.1
-    # via lingo (pyproject.toml)
+    # via
+    #   lingo (pyproject.toml)
+    #   uvicorn
+python-multipart==0.0.9
+    # via fastapi
 pytz==2024.1
     # via pandas
 pyyaml==6.0.1
@@ -280,6 +322,7 @@ pyyaml==6.0.1
     #   langchain-community
     #   langchain-core
     #   transformers
+    #   uvicorn
 regex==2023.12.25
     # via
     #   nltk
@@ -299,12 +342,18 @@ requests==2.31.0
     #   transformers
 responses==0.18.0
     # via evaluate
+rich==13.7.1
+    # via typer
 rouge==1.0.1
     # via lingo (pyproject.toml)
 rsa==4.9
     # via google-auth
 safetensors==0.4.2
     # via transformers
+scipy==1.13.1
+    # via lingo (pyproject.toml)
+shellingham==1.5.4
+    # via typer
 six==1.16.0
     # via
     #   asttokens
@@ -321,6 +370,8 @@ sqlalchemy==2.0.28
     #   langchain-community
 stack-data==0.6.3
     # via ipython
+starlette==0.37.2
+    # via fastapi
 sympy==1.12
     # via torch
 tenacity==8.2.3
@@ -357,25 +408,40 @@ traitlets==5.14.2
     #   matplotlib-inline
 transformers==4.39.3
     # via lingo (pyproject.toml)
+typer==0.12.3
+    # via fastapi-cli
 typing-extensions==4.10.0
     # via
+    #   fastapi
     #   huggingface-hub
+    #   llama-cpp-python
     #   openai
     #   pydantic
     #   pydantic-core
     #   sqlalchemy
     #   torch
+    #   typer
     #   typing-inspect
 typing-inspect==0.9.0
     # via dataclasses-json
 tzdata==2024.1
     # via pandas
+ujson==5.10.0
+    # via fastapi
 urllib3==2.2.1
     # via
     #   requests
     #   responses
+uvicorn[standard]==0.30.1
+    # via fastapi
+uvloop==0.19.0
+    # via uvicorn
+watchfiles==0.22.0
+    # via uvicorn
 wcwidth==0.2.13
     # via prompt-toolkit
+websockets==12.0
+    # via uvicorn
 widgetsnbextension==4.0.10
     # via ipywidgets
 xxhash==3.4.1

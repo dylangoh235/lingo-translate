@@ -1,4 +1,5 @@
-from lingo.manager import Translator
+from lingo_translate.manager import Translator
+from lingo_suggestion.engine import synonym_recommendation
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
@@ -12,13 +13,17 @@ class RequestBody(BaseModel):
     kargs: dict | None
 
 
+class SuggestionBody(BaseModel):
+    model: str
+    targetWord: str
+    sentence: bool
+    cntxt_len: int
+    text: str
+    abbreviation: bool
+
+
 app = FastAPI()
 translator = Translator()
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
 
 
 @app.get("/translate")
@@ -42,6 +47,20 @@ async def translate(request: RequestBody):
     )
 
     response = {"query": result["output"]}
+    return response
+
+
+@app.get("/suggestion")
+async def suggestion(request: SuggestionBody):
+    synonym_recommend = synonym_recommendation(
+        model=request.model,
+        targetWord=request.targetWord,
+        sentence=request.sentence,
+        cntxt_len=request.cntxt_len,
+        text=request.text,
+    )
+
+    response = {"suggestions": synonym_recommend.post_processing()}
     return response
 
 

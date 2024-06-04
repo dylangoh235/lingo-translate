@@ -138,7 +138,7 @@ class HuggingFaceModel(HuggingFaceTranslation, AbstractModel):
         back_perplexity = self.calculate_perplexity(back_model_inputs["input_ids"])
 
         return {
-            "text": translation_text,
+            "output": translation_text,
             "reverse_translation": back_translation_text,
             "perplexity": perplexity,
             "reverse_perplexity": back_perplexity,
@@ -165,7 +165,7 @@ class OpenAIModel(AbstractModel):
             ],
             model=model,
         )
-        return chat_completion.choices[0].message.content
+        return {"output": chat_completion.choices[0].message.content}
 
 
 class LangchainModel(AbstractModel):

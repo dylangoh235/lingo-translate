@@ -1,5 +1,5 @@
-import lingo.api_modules as api_modules
-import lingo.model_modules as model_modules
+import lingo_translate.api_modules as api_modules
+import lingo_translate.model_modules as model_modules
 from dotenv import load_dotenv
 from typing import Dict, Any
 
