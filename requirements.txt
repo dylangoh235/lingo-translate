@@ -15,7 +15,10 @@ aiosignal==1.3.1
 annotated-types==0.6.0
     # via pydantic
 anyio==4.3.0
-    # via langchain-core
+    # via
+    #   httpx
+    #   langchain-core
+    #   openai
 astroid==3.1.0
     # via pylint
 asttokens==2.4.1
@@ -25,7 +28,10 @@ attrs==23.2.0
 cachetools==5.3.3
     # via google-auth
 certifi==2024.2.2
-    # via requests
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
@@ -52,6 +58,8 @@ dill==0.3.7
     #   evaluate
     #   multiprocess
     #   pylint
+distro==1.9.0
+    # via openai
 evaluate==0.4.1
     # via lingo (pyproject.toml)
 executing==2.0.1
@@ -96,6 +104,12 @@ grpcio==1.62.2
     #   grpcio-status
 grpcio-status==1.62.2
     # via google-api-core
+h11==0.14.0
+    # via httpcore
+httpcore==1.0.5
+    # via httpx
+httpx==0.27.0
+    # via openai
 huggingface-hub==0.22.2
     # via
     #   datasets
@@ -105,6 +119,7 @@ huggingface-hub==0.22.2
 idna==3.6
     # via
     #   anyio
+    #   httpx
     #   requests
     #   yarl
 ipython==8.23.0
@@ -183,6 +198,8 @@ numpy==1.26.4
     #   pyarrow
     #   torchvision
     #   transformers
+openai==1.25.0
+    # via lingo (pyproject.toml)
 orjson==3.9.15
     # via langsmith
 packaging==23.2
@@ -238,6 +255,7 @@ pydantic==2.6.4
     #   langchain
     #   langchain-core
     #   langsmith
+    #   openai
 pydantic-core==2.16.3
     # via pydantic
 pygments==2.17.2
@@ -293,7 +311,10 @@ six==1.16.0
     #   python-dateutil
     #   rouge
 sniffio==1.3.1
-    # via anyio
+    # via
+    #   anyio
+    #   httpx
+    #   openai
 sqlalchemy==2.0.28
     # via
     #   langchain
@@ -326,6 +347,7 @@ tqdm==4.66.2
     #   evaluate
     #   huggingface-hub
     #   nltk
+    #   openai
     #   transformers
 traitlets==5.14.2
     # via
@@ -338,6 +360,7 @@ transformers==4.39.3
 typing-extensions==4.10.0
     # via
     #   huggingface-hub
+    #   openai
     #   pydantic
     #   pydantic-core
     #   sqlalchemy

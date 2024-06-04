@@ -1,13 +1,14 @@
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from transformers.tokenization_utils import TruncationStrategy
-from transformers.utils import ModelOutput
 from abc import ABC, abstractmethod
 import torch
+from openai import OpenAI
+import os
 
 MODEL_SERVICE_MAPPING_NAME = {
     "huggingface": "HuggingFaceModel",
     "langchain": "LangchainModel",
-    "torch": "TorchModel",
+    "openai": "OpenAIModel",
 }
 
 
@@ -20,8 +21,11 @@ class AbstractModel(ABC):
 # 딥러닝 모델 클래스
 class HuggingFaceTranslation:
     """
-    Huggingface애 올라온 모델 번역을 위한 클래스.
+    Huggingface에서 제공하는 모델을 활용하여 번역
 
+    Huggingface에서 제공한 코드를 가져와 수정하였습니다.
+
+    https://github.com/huggingface/transformers
     """
 
     def __init__(self, model_name: str = "facebook/nllb-200-distilled-1.3B"):
@@ -112,7 +116,6 @@ class HuggingFaceModel(HuggingFaceTranslation, AbstractModel):
     """
 
     def translate(self, text: str, src_lang: str, tgt_lang: str, **kwargs):
-
         preprocess_params, forward_params, postprocess_params = (
             self.sanitize_parameters(src_lang=src_lang, tgt_lang=tgt_lang)
         )
@@ -140,6 +143,29 @@ class HuggingFaceModel(HuggingFaceTranslation, AbstractModel):
             "perplexity": perplexity,
             "reverse_perplexity": back_perplexity,
         }
+
+
+class OpenAIModel(AbstractModel):
+    def __init__(self):
+        self.auth_key = os.getenv("OPENAI_AUTH_KEY")
+        self.client = OpenAI(api_key=self.auth_key)
+
+    def translate(self, text: str, src_lang: str, tgt_lang: str, **kwargs) -> dict:
+        model = kwargs.get("model", "gpt-3.5-turbo")
+        system_prompt = f"your job is to translate {src_lang} to {tgt_lang}"
+        user_prompt = text
+
+        chat_completion = self.client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt,
+                },
+                {"role": "user", "content": user_prompt},
+            ],
+            model=model,
+        )
+        return chat_completion.choices[0].message.content
 
 
 class LangchainModel(AbstractModel):

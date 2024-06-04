@@ -1,8 +1,7 @@
 import lingo.api_modules as api_modules
 import lingo.model_modules as model_modules
 from dotenv import load_dotenv
-from typing import Dict
-import os
+from typing import Dict, Any
 
 
 def get_class(modules, model_name):
@@ -17,7 +16,7 @@ class APIManager:
     ----------
     _api_mapping : Dict[str, str]
         서비스 이름과 해당 API 클래스 이름을 매핑하는 사전입니다.
-    kwargs : dict
+    kwargs : Dict[str, Any]
         API 초기화에 사용될 추가 인자들입니다.
     api : api_modules.AbstractAPI
         현재 활성화된 API 객체입니다.
@@ -39,7 +38,7 @@ class APIManager:
 
     _api_mapping: Dict[str, str] = api_modules.API_SERVICE_MAPPING_NAME
 
-    def __init__(self, service: str, **kwargs) -> None:
+    def __init__(self, service: str, **kwargs: Dict[str, Any]) -> None:
         self.kwargs = kwargs
         self.api: api_modules.AbstractAPI = self.initialize_api(service)
 
@@ -112,8 +111,8 @@ class ModelManager:
     ----------
     _model_mapping : Dict[str, str]
         서비스 이름과 해당 Model 클래스 이름을 매핑하는 사전입니다.
-    api : model_modules.AbstractModel
-        현재 활성화된 API 객체입니다.
+    model : model_modules.AbstractModel
+        현재 활성화된 Model 객체입니다.
 
     Parameters
     ----------
@@ -132,7 +131,7 @@ class ModelManager:
 
     _model_mapping: Dict[str, str] = model_modules.MODEL_SERVICE_MAPPING_NAME
 
-    def __init__(self, service: str, **kwargs) -> None:
+    def __init__(self, service: str, **kwargs: Dict[str, Any]) -> None:
         self.kwargs = kwargs
         self.model: model_modules.AbstractModel = self.initialize_model(service)
 
@@ -204,13 +203,13 @@ class Translator:
     Attributes
     ----------
     api_manager : APIManager
-        DeepL과 같은 API 기반 번역 서비스를 관리합니다.
+        현재 활성화된 서비스를 관리하는 APIManager 객체입니다.
     model_manager : ModelManager
-        Hugging Face와 같은 모델 기반 번역 서비스를 관리합니다.
+        현재 활성화된 서비스를 관리하는 ModelManager 객체입니다.
 
     Methods
     -------
-    translate(query: str, src_lan: str, tgt_lan: str, service: str = "google", **kwargs)
+    translate(query: str, src_lan: str, tgt_lan: str, service: str = "google", **kwargs: Dict[str, Any])
         주어진 입력 텍스트를 지정된 소스 언어에서 목표 언어로 번역합니다.
 
         현재 지원하는 서비스는 deepl, google, papago, huggingface, langchain, torch 입니다.
@@ -222,7 +221,12 @@ class Translator:
         self.model_manager: ModelManager = ModelManager("huggingface")
 
     def translate(
-        self, query: str, src_lan: str, tgt_lan: str, service: str = "google", **kwargs
+        self,
+        query: str,
+        src_lan: str,
+        tgt_lan: str,
+        service: str = "google",
+        **kwargs: Dict[str, Any],
     ):
         """
         입력된 텍스트를 지정된 소스 언어에서 목표 언어로 번역하여 결과를 반환합니다.
