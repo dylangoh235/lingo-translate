@@ -166,12 +166,3 @@ class OpenAIModel(AbstractModel):
             model=model,
         )
         return {"output": chat_completion.choices[0].message.content}
-
-
-class LangchainModel(AbstractModel):
-    """
-    현재 Langchain으로 테스트 중입니다.
-    """
-
-    def translate(self, text, src_algn, tgt_lang, **kwargs):
-        pass
