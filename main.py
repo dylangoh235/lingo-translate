@@ -22,6 +22,11 @@ class SuggestionBody(BaseModel):
     abbreviation: bool
 
 
+class ResponseBody(BaseModel):
+    score: int
+    query: str
+
+
 app = FastAPI()
 translator = Translator()
 
@@ -34,19 +39,17 @@ async def translate(request: RequestBody):
          query: "string",
          sourceLan: "string",
          targetLan: "string",
-         kargs: dict
+         kwargs: dict
     }
 
     """
 
-    result = translator.translate(
+    response = translator.translate(
         query=request.query,
         src_lan=request.sourceLan,
         tgt_lan=request.targetLan,
         service=request.service,
     )
-
-    response = {"query": result["output"]}
     return response
 
 

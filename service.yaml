@@ -1,0 +1,15 @@
+#================================================
+# 
+#================================================
+
+
+api_services:
+  deepl: DeepLTranslateAPI
+  google: GoogleTranslateAPI
+  papago: NaverPapagoAPI
+
+model_services:
+  huggingface_nllb: HuggingFaceNllbModel
+
+
+

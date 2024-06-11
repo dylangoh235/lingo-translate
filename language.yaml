@@ -1,0 +1,11 @@
+# https://github.com/facebookresearch/flores/blob/main/flores200/README.md#languages-in-flores-200
+huggingface_nllb:
+  en: eng_Latn
+  ko: kor_Hang
+
+# https://developers.deepl.com/docs/resources/supported-languages
+deepl:
+  en: EN-US
+  ko: KO
+
+
