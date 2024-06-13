@@ -3,7 +3,9 @@ def _find_submodules():
     from importlib import import_module
 
     package_path = Path(__file__).resolve().parent
-    return tuple(p.stem for p in package_path.glob("*.py") if p.stem != "__init__")
+    return tuple(
+        p.stem for p in package_path.glob("*_module.py") if p.stem != "__init__"
+    )
 
 
 __submodules__ = _find_submodules()

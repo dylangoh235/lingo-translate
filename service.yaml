@@ -1,5 +1,7 @@
 #================================================
-# 
+# api_services:
+#   "서비스 이름": "불러올 서비스 클래스 이름"
+#   ex) deep: DeepLTranslateAPI
 #================================================
 
 
@@ -10,6 +12,6 @@ api_services:
 
 model_services:
   huggingface_nllb: HuggingFaceNllbModel
-
+  torch_transformer: TorchTransformerModel
 
 

@@ -1,13 +1,10 @@
 # ================================================
-# 유저는 Translator class에서 translate method만 호출함
-#
+# Translator
+#   API와 Model 서비스 관리하는 클래스
 # ================================================
+from lingo_translate.mapper import API_SERVICE_MAPPING_NAME, MODEL_SERVICE_MAPPING_NAME
 from lingo_translate.api_manager import APIManager
 from lingo_translate.model_manager import ModelManager
-from lingo_translate.mapper import (
-    API_SERVICE_MAPPING_NAME,
-    MODEL_SERVICE_MAPPING_NAME,
-)
 from lingo_translate.exception import (
     ServiceNotFoundException,
     OutputFormatNotValidException,
@@ -31,8 +28,8 @@ class Translator:
     -------
     translate(query: str, src_lan: str, tgt_lan: str, service: str = "google", **kwargs: Dict[str, Any])
         주어진 입력 텍스트를 지정된 소스 언어에서 목표 언어로 번역합니다.
-
-        현재 지원하는 서비스는 deepl, google, papago, huggingface, langchain, torch 입니다.
+        service가 변경되면 자동으로 해당 서비스 매니저에서 변경합니다.
+        kwargs는 해당 서비스에서 사용하는 모듈 설정을 보내주는데 사용합니다.
     """
 
     def __init__(self):
@@ -60,19 +57,14 @@ class Translator:
         tgt_lan : str
             목표 텍스트의 언어입니다.
         service : str, optional
-            사용할 번역 서비스의 이름입니다. 기본값은 "google"입니다.
-            현재 지원하는 서비스는 deepl, google, papago, huggingface, langchain, torch 입니다.
+            사용할 번역 서비스의 이름입니다.
 
         Returns
         -------
         output : dict
             번역 결과와 관련 정보를 담은 딕셔너리입니다.
-            예시) {"output": "Hello", "score": None}
+            예시: {"output": "Hello", "score": None}
 
-        Raises
-        ------
-        ValueError
-            지원하지 않는 번역 서비스를 지정했을 때 발생합니다.
         """
 
         if service in API_SERVICE_MAPPING_NAME:

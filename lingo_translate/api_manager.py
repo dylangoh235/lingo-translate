@@ -4,7 +4,10 @@ from lingo_translate.mapper import (
     get_language_mapper,
     API_SERVICE_MAPPING_NAME,
 )
-from lingo_translate.exception import ServiceNotFoundException
+from lingo_translate.exception import (
+    ServiceNotFoundException,
+    InvalidLanguageCodeException,
+)
 import lingo_translate.api_modules as api_modules
 from typing import Dict, Any
 
@@ -91,11 +94,12 @@ class APIManager:
         dict
             번역 결과를 담은 사전입니다.
         """
+        try:
+            converted_src_lan = self.language_mapper[src_lan]
+            converted_tgt_lan = self.language_mapper[tgt_lan]
+        except KeyError as e:
+            raise InvalidLanguageCodeException(f"Invalid language code: {e}")
 
-        converted_src_lan, converted_tgt_lan = (
-            self.language_mapper[src_lan],
-            self.language_mapper[tgt_lan],
-        )
         result = self.api.translate(query, converted_src_lan, converted_tgt_lan)
         return result
 

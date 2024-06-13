@@ -1,6 +1,13 @@
 from lingo_translate.manager import Translator
+from lingo_translate.mapper import (
+    is_services_all_exist,
+    API_SERVICE_MAPPING_NAME,
+    MODEL_SERVICE_MAPPING_NAME,
+)
+import lingo_translate.exception as exception
 from lingo_suggestion.engine import synonym_recommendation
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
@@ -31,6 +38,31 @@ app = FastAPI()
 translator = Translator()
 
 
+@app.exception_handler(exception.InvalidLanguageCodeException)
+async def unicorn_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={exc})
+
+
+@app.exception_handler(exception.LanguageMapperNotFoundException)
+async def unicorn_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={exc})
+
+
+@app.exception_handler(exception.OutputFormatNotValidException)
+async def unicorn_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={exc})
+
+
+@app.exception_handler(exception.ModuleNotFoundException)
+async def unicorn_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={exc})
+
+
+@app.exception_handler(exception.ServiceNotFoundException)
+async def unicorn_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={exc})
+
+
 @app.get("/translate")
 async def translate(request: RequestBody):
     """
@@ -51,6 +83,11 @@ async def translate(request: RequestBody):
         service=request.service,
     )
     return response
+
+
+@app.get("/model-list")
+async def model_list():
+    return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME]
 
 
 @app.get("/suggestion")

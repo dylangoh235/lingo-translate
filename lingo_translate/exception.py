@@ -12,3 +12,7 @@ class OutputFormatNotValidException(Exception):
 
 class LanguageMapperNotFoundException(Exception):
     pass
+
+
+class InvalidLanguageCodeException(Exception):
+    pass

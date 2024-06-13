@@ -4,8 +4,11 @@ from lingo_translate.mapper import (
     get_language_mapper,
     MODEL_SERVICE_MAPPING_NAME,
 )
-from lingo_translate.exception import ServiceNotFoundException
-import lingo_translate.model_manager as model_manager
+from lingo_translate.exception import (
+    ServiceNotFoundException,
+    InvalidLanguageCodeException,
+)
+import lingo_translate.model_modules as model_modules
 from typing import Dict, Any
 
 
@@ -41,7 +44,7 @@ class ModelManager:
         self.kwargs = kwargs
         self.model = None
 
-    def initialize_model(self, service: str) -> model_manager.AbstractModel:
+    def initialize_model(self, service: str) -> AbstractModel:
         """
         주어진 서비스 이름에 맞는 모델 객체를 초기화하고 반환합니다.
 
@@ -63,7 +66,7 @@ class ModelManager:
         if service in self.MODEL_MAPPING:
             model_module_name = self.MODEL_MAPPING[service]
             self.language_mapper = get_language_mapper(service)
-            model_class = get_class_from_module(model_manager, model_module_name)
+            model_class = get_class_from_module(model_modules, model_module_name)
             return model_class(**self.kwargs)
         else:
             raise ServiceNotFoundException(
@@ -88,10 +91,12 @@ class ModelManager:
         dict
             번역 결과를 담은 사전입니다.
         """
-        converted_src_lan, converted_tgt_lan = (
-            self.language_mapper[src_lan],
-            self.language_mapper[tgt_lan],
-        )
+        try:
+            converted_src_lan = self.language_mapper[src_lan]
+            converted_tgt_lan = self.language_mapper[tgt_lan]
+        except KeyError as e:
+            raise InvalidLanguageCodeException(f"Invalid language code: {e}")
+
         result = self.model.translate(query, converted_src_lan, converted_tgt_lan)
         return result
 
