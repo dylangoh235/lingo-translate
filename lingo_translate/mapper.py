@@ -62,11 +62,13 @@ def get_language_mapper(service):
         return supported_language[service]
 
 
-def convert_language(service: str, mapper: dict, src_lan: str, tgt_lan: str):
+def convert_language(mapper: dict, src_lan: str, tgt_lan: str):
     converted_src_lan = mapper.get(src_lan)
     converted_tgt_lan = mapper.get(tgt_lan)
     if converted_src_lan is None or converted_tgt_lan is None:
-        raise LanguageMapperNotFoundException(f"{service}에 제공된 언어가 없습니다.")
+        raise LanguageMapperNotFoundException(
+            f"사용한 서비스에 제공된 언어가 없습니다."
+        )
 
     return converted_src_lan, converted_tgt_lan
 
