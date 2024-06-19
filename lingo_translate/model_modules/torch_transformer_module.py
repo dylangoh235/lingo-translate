@@ -1,4 +1,4 @@
-from lingo_translate.abstract import AbstractModel
+from lingo_translate.mapper import AbstractModel
 
 
 class TorchTransformerModel(AbstractModel):

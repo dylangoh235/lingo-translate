@@ -1,9 +1,5 @@
 from lingo_translate.manager import Translator
-from lingo_translate.mapper import (
-    is_services_all_exist,
-    API_SERVICE_MAPPING_NAME,
-    MODEL_SERVICE_MAPPING_NAME,
-)
+from lingo_translate.mapper import API_SERVICE_MAPPING_NAME, MODEL_SERVICE_MAPPING_NAME
 import lingo_translate.exception as exception
 from lingo_suggestion.engine import synonym_recommendation
 from fastapi import FastAPI

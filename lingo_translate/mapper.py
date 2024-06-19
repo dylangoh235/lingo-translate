@@ -8,8 +8,6 @@
 #       지정된 언어 형식으로 들어오면 서비스와 모델을 변경
 #       호출 실패시 LanguageMapperNotFoundException 호출
 # ================================================
-import lingo_translate.api_modules as api_modules
-import lingo_translate.model_modules as model_modules
 from lingo_translate.exception import (
     ModuleNotFoundException,
     LanguageMapperNotFoundException,
@@ -21,22 +19,6 @@ import yaml
 def _get_services():
     with open("service.yaml", "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
-
-def _is_service_exist(modules, service_name):
-    if not getattr(modules, service_name, None):
-        raise ModuleNotFoundException(f"'{service_name}'을 찾을 수 없습니다.")
-
-
-def is_services_all_exist():
-    # _all_services = _get_services()
-    # for api_service in _all_services["api_services"]:
-    #     print(api_service)
-    #     _is_service_exist(api_modules, api_service)
-
-    # for model_service in _all_services["model_services"]:
-    #     _is_service_exist(model_modules, model_service)
-    pass
 
 
 _ALL_SERVICES = _get_services()
