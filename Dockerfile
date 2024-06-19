@@ -1,5 +1,7 @@
 FROM python:3.12
 
+LABEL author="Dongyeon Go"
+
 COPY . /lingo
 WORKDIR /lingo
 
