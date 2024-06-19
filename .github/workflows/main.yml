@@ -14,37 +14,37 @@ jobs:
 
     # 실행될 jobs 순서대로 명시
     steps:
-    - name: Checkout
-      # uses keyword를 통해 action 불러오기
-      # 여기서는 해당 repository로 checkout해 접근할 수 있는 action을 불러온다. v3도 있으니 경우에 따라 적용할 것.
-      uses: actions/checkout@v2
+      - name: Checkout
+        # uses keyword를 통해 action 불러오기
+        # 여기서는 해당 repository로 checkout해 접근할 수 있는 action을 불러온다. v3도 있으니 경우에 따라 적용할 것.
+        uses: actions/checkout@v2
 
-    - name: DockerHub Login
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: DockerHub Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker Image Build
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:latest .
+      - name: Docker Image Build
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
 
-    - name: Docker Push
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:latest
+      - name: Docker Push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
-    - name: lab deploy server 접속 및 app 실행
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
-        password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
-        port: ${{ secrets.DEPLOY_PORT }}
+      - name: lab deploy server 접속 및 app 실행
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
+          port: ${{ secrets.DEPLOY_PORT }}
 
-        script: |
-          sudo docker kill ${{ secrets.DOCKER_IMAGE }}
-          sudo docker rm -f ${{ secrets.DOCKER_IMAGE }}
-          sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+          script: |
+            sudo docker kill ${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker rm -f ${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
-          sudo docker run --network=host -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
-          --name ${{ secrets.DOCKER_IMAGE }} \
-          -d ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
+            sudo docker run --network=host -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
+            --name ${{ secrets.DOCKER_IMAGE_NAME }} \
+            -d ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
