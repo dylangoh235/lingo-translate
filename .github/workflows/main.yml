@@ -4,7 +4,7 @@ name: AI Translate and Suggestion Server Deploy
 on:
   # dev branch에 push or pull request 발생 시
   push:
-    branches: ["main"]
+    branches: ["deploy"]
   pull_request:
     branches: ["main"]
 
