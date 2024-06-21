@@ -1,7 +1,7 @@
 from lingo_translate.manager import Translator
 from lingo_translate.mapper import API_SERVICE_MAPPING_NAME, MODEL_SERVICE_MAPPING_NAME
 import lingo_translate.exception as exception
-from lingo_suggestion.engine import synonym_recommendation
+from lingo_suggestion.suggestion import synonym_suggestion
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -88,15 +88,22 @@ async def model_list():
 
 @app.get("/suggestion")
 async def suggestion(request: SuggestionBody):
-    synonym_recommend = synonym_recommendation(
-        model=request.model,
-        targetWord=request.targetWord,
+    synonyms = synonym_suggestion(request.model).suggestion(
+        target_word=request.targetWord,
         sentence=request.sentence,
         cntxt_len=request.cntxt_len,
         text=request.text,
+        abbreviation=request.abbreviation
     )
+    # synonym_recommend = synonym_recommendation(
+    #     model=request.model,
+    #     targetWord=request.targetWord,
+    #     sentence=request.sentence,
+    #     cntxt_len=request.cntxt_len,
+    #     text=request.text,
+    # )
 
-    response = {"suggestions": synonym_recommend.post_processing()}
+    response = {"suggestions": synonyms}
     return response
 
 
