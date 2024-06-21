@@ -1,5 +1,5 @@
 from model_load import ModelLoader
-from context import get_context
+from context import get_context, find_word_by_index
 from abbreviation.convert_abbrv import *
 from exception import (
     ServiceNotFoundException,
@@ -22,7 +22,7 @@ class synonym_suggestion():
 
         text : string, paragraph including target word
 
-        abbreviation : bool, whether or not to abbreviation conversion
+        abbreviation : bool, whether or not to abbreviation conversion to add synonym suggestion
         """
 
         #load_dotenv()
@@ -37,7 +37,9 @@ class synonym_suggestion():
         # self.cntxt_len = cntxt_len
         # self.text = text
         # self.abbreviation = abbreviation
-        
+        if type(target_word) == int:
+            target_word = find_word_by_index(text=text, index=target_word)
+            
         text = get_context(target_word=target_word, context=text, sentence=sentence, cntxt_len=cntxt_len) if cntxt_len != 0 else text
 
         if abbreviation:
@@ -48,7 +50,7 @@ class synonym_suggestion():
             return self.model.suggestion(target_word, text, cntxt_len)
 
 suggestor = synonym_suggestion("llama2_13b")
-term = suggestor.suggestion("CT", True, 0, "what you wanna do my man? i don't need a baby right now, i just want to get a sleep.")
+term = suggestor.suggestion("0", True, 0, "what you wanna do my man? i don't need a baby right now, i just want to get a sleep.")
 
 print(term)
 

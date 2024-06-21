@@ -9,12 +9,26 @@ If sentence is False, Return cntxt_len number of words
                          before and after of the target word.
 
 """
+def find_word_by_index(text, index):
+    words = text.split()
+    
+    if index < 0 or index >= len(words):
+        raise 1
+    
+    return words[index]
 
 def get_context(target_word, context, sentence, cntxt_len) -> str:
 
     # if cntxt_len == 0:
     #     return ""
     
+    if type(target_word) == int:
+        words = context.split()
+        if target_word < 0 or target_word >= len(words):
+            raise 1
+        else:
+            target_word = words[target_word]
+            
     import re
     sentences = re.split(r'[.!?] ', context)
 
