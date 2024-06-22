@@ -38,7 +38,7 @@ class ModelLoader:
 
     def load_class(self, module_file, class_name):
         try:
-            module_path = os.path.join("models", f"{module_file}.py")
+            module_path = os.path.join("./lingo_suggestion/models", f"{module_file}.py")
             
             if not os.path.exists(module_path):
                 raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exsit.")

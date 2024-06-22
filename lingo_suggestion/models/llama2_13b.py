@@ -9,7 +9,7 @@ class llama2_13b():
     def __init__(self) -> None:
         
         self.model = LlamaCpp(
-        model_path="./models/checkpoint/"+"llama-2-13b-chat.Q3_K_M.gguf",
+        model_path="./lingo_suggestion/models/checkpoints/"+"llama-2-13b-chat.Q3_K_M.gguf",
         n_gpu_layers=50,
         n_batch=2000,
         temperature=0,

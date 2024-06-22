@@ -1,5 +1,6 @@
 from lingo_translate.manager import Translator
 from lingo_translate.mapper import API_SERVICE_MAPPING_NAME, MODEL_SERVICE_MAPPING_NAME
+from lingo_suggestion.model_load import SUGGESTION_SERVICE_MAPPING_NAME
 import lingo_translate.exception as exception
 from lingo_suggestion.suggestion import synonym_suggestion
 from fastapi import FastAPI
@@ -85,7 +86,7 @@ async def translate(request: RequestBody):
 
 @app.get("/model-list")
 async def model_list():
-    return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME]
+    return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME] + [SUGGESTION_SERVICE_MAPPING_NAME] 
 
 
 @app.get("/suggestion")
