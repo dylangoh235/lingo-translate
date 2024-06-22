@@ -1,4 +1,4 @@
-from lingo_translate.abstract import AbstractModel
+from lingo_translate.mapper import AbstractModel
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from transformers.tokenization_utils import TruncationStrategy
 import torch

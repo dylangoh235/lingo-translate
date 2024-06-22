@@ -1,4 +1,4 @@
-from lingo_translate.abstract import AbstractAPI
+from lingo_translate.mapper import AbstractAPI
 import urllib.request
 import os
 
