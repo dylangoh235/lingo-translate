@@ -13,7 +13,7 @@ def _get_services():
         return yaml.safe_load(f)
 
 _ALL_SERVICES = _get_services()
-MODEL_SERVICE_MAPPING_NAME = _ALL_SERVICES["suggestion_services"]
+SUGGESTION_SERVICE_MAPPING_NAME = _ALL_SERVICES["suggestion_services"]
 
 class Abstract:
 
@@ -24,7 +24,7 @@ class Abstract:
 
 class ModelLoader:
 
-    MODEL_MAPPING: Dict[str, str] = MODEL_SERVICE_MAPPING_NAME
+    MODEL_MAPPING: Dict[str, str] = SUGGESTION_SERVICE_MAPPING_NAME
 
     def __init__(self, model: str):
         self.model = model
