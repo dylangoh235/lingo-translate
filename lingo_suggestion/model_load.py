@@ -13,7 +13,7 @@ def _get_services():
         return yaml.safe_load(f)
 
 _ALL_SERVICES = _get_services()
-MODEL_SERVICE_MAPPING_NAME = _ALL_SERVICES["model_services"]
+MODEL_SERVICE_MAPPING_NAME = _ALL_SERVICES["suggestion_services"]
 
 class Abstract:
 

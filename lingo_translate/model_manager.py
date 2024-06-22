@@ -18,7 +18,7 @@ class ModelManager:
     ----------
     _model_mapping : Dict[str, str]
         서비스 이름과 해당 Model 클래스 이름을 매핑하는 사전입니다.
-    model : model_modules.AbstractModelq
+    model : model_modules.AbstractModel
         현재 활성화된 Model 객체입니다.
 
     Parameters

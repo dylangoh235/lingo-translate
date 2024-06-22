@@ -5,8 +5,10 @@ from lingo_suggestion.suggestion import synonym_suggestion
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from dotenv import load_dotenv
 import uvicorn
 
+load_dotenv()
 
 class RequestBody(BaseModel):
     service: str
@@ -88,6 +90,21 @@ async def model_list():
 
 @app.get("/suggestion")
 async def suggestion(request: SuggestionBody):
+    
+    """
+    model : string, choose model to suggest synonym
+
+    target_word : integer, index of target word
+
+    sentence : bool, choose sentence-by-sentence or word-by-word
+
+    cntxt_len : integer, number of units to check context
+
+    text : string, paragraph including target word
+
+    abbreviation : bool, whether or not to abbreviation conversion to add synonym suggestion
+    """
+
     synonyms = synonym_suggestion(request.model).suggestion(
         target_word=request.targetWord,
         sentence=request.sentence,
@@ -95,13 +112,6 @@ async def suggestion(request: SuggestionBody):
         text=request.text,
         abbreviation=request.abbreviation
     )
-    # synonym_recommend = synonym_recommendation(
-    #     model=request.model,
-    #     targetWord=request.targetWord,
-    #     sentence=request.sentence,
-    #     cntxt_len=request.cntxt_len,
-    #     text=request.text,
-    # )
 
     response = {"suggestions": synonyms}
     return response
