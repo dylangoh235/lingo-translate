@@ -15,6 +15,13 @@ def _get_services():
 _ALL_SERVICES = _get_services()
 MODEL_SERVICE_MAPPING_NAME = _ALL_SERVICES["model_services"]
 
+class Abstract:
+
+    def __init(self, target_word, text=None, cntxt_len=None):
+        self.target_word = target_word
+        self.text = text
+        self.cntxt_len = cntxt_len
+
 class ModelLoader:
 
     MODEL_MAPPING: Dict[str, str] = MODEL_SERVICE_MAPPING_NAME
