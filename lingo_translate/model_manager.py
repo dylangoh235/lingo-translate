@@ -91,7 +91,7 @@ class ModelManager:
         dict
             번역 결과를 담은 사전입니다.
         """
-        converted_src_lan, converted_tgt_lan = convert_language(src_lan, tgt_lan)
+        converted_src_lan, converted_tgt_lan = convert_language(self.language_mapper, src_lan, tgt_lan)
 
         result = self.model.translate(query, converted_src_lan, converted_tgt_lan)
         return result
