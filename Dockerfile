@@ -11,4 +11,4 @@ RUN python3 -m pip install pip-tools &&\
     pip-sync
 
 # 서버 실행
-ENTRYPOINT ["python", "main.py"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
