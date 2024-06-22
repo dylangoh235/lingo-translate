@@ -20,7 +20,6 @@ def _get_services():
     with open("service.yaml", "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-
 _ALL_SERVICES = _get_services()
 API_SERVICE_MAPPING_NAME = _ALL_SERVICES["api_services"]
 MODEL_SERVICE_MAPPING_NAME = _ALL_SERVICES["model_services"]
