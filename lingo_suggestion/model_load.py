@@ -59,6 +59,7 @@ class ModelLoader:
             print(f"An error occurred: {e}")
 
     def model_return(self):
+        print(self.model, self.MODEL_MAPPING)
         if self.model in self.MODEL_MAPPING:
             model_class = self.load_class(self.model, self.MODEL_MAPPING[self.model])
             return model_class()
