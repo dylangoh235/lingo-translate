@@ -33,6 +33,8 @@ jobs:
 
       - name: lab deploy server 접속 및 app 실행
         uses: appleboy/ssh-action@v0.1.6
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_SERVER_USERNAME }}

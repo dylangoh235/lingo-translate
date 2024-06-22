@@ -1,6 +1,6 @@
 FROM python:3.12
 
-LABEL author="Dongyeon Go"
+LABEL author="Dongyeon Goh"
 
 COPY . /lingo
 WORKDIR /lingo

@@ -9,7 +9,7 @@ class DeepLTranslateAPI(AbstractAPI):
     """
 
     def __init__(self, **kwargs) -> None:
-        self.endpoint = os.getenv("DEEPL_ENDPOINT", None)
+        self.endpoint = os.getenv("DEEPL_ENDPOINT", "https://api-free.deepl.com")
         self.translator = deepl.Translator(
             auth_key=os.getenv("DEEPL_AUTH_KEY"), server_url=self.endpoint
         )
