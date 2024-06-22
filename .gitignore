@@ -1,6 +1,6 @@
 .venv/
 lingo.egg-info/
-
+*/__pycache__
+*/*/__pycache__
 .env
-
-facebook.ipynb
+lingo_suggestion/models/checkpoints

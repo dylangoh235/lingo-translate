@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 requires-python = ">=3.9"
@@ -20,4 +20,7 @@ dependencies = ["langchain",
                 "pylint",
                 "deepl",
                 "google-cloud-translate",
-                "python-dotenv"]
+                "python-dotenv",
+                "fastapi",
+                "scipy",
+                "llama-cpp-python"]
