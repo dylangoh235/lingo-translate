@@ -23,8 +23,10 @@ def load_abbreviations(file_path):
                         abbrev_dict[key] = value
     return abbrev_dict
 
-def replace_abbreviations(sentence, abbrev_dict):
+def replace_abbreviations(sentence):
     """Replace abbreviations in a sentence with their full forms."""
+    abbrev_dict = load_abbreviations('./abbreviation/abbreviation.txt')
+
     import re
     words = re.split('(\W+)', sentence)
     replaced_words = []
