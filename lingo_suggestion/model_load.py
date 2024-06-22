@@ -1,7 +1,7 @@
-from exception import ServiceNotFoundException
-import model_load as model_load
+from lingo_suggestion.exception import ServiceNotFoundException
+import lingo_suggestion.model_load as model_load
 from typing import Dict, Any
-from exception import (
+from lingo_suggestion.exception import (
     ModuleNotFoundException,
 )
 import yaml
