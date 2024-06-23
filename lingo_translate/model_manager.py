@@ -38,11 +38,10 @@ class ModelManager:
 
     MODEL_MAPPING: Dict[str, str] = MODEL_SERVICE_MAPPING_NAME
 
-    def __init__(self, **kwargs: Dict[str, Any]) -> None:
-        self.kwargs = kwargs
+    def __init__(self) -> None:
         self.model = None
 
-    def initialize_model(self, service: str) -> AbstractModel:
+    def initialize_model(self, service: str, **kwargs) -> AbstractModel:
         """
         주어진 서비스 이름에 맞는 모델 객체를 초기화하고 반환합니다.
 
@@ -67,13 +66,13 @@ class ModelManager:
             model_class = get_class_from_module(
                 model_modules, model_module_name, AbstractModel
             )
-            return model_class(**self.kwargs)
+            return model_class(**kwargs)
         else:
             raise ServiceNotFoundException(
                 f"해당 {service}가 Model map에 존재하지 않는 서비스 입니다."
             )
 
-    def translate(self, query: str, src_lan: str, tgt_lan: str) -> dict:
+    def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:
         """
         주어진 텍스트를 번역하여 결과를 반환합니다.
 
@@ -92,10 +91,10 @@ class ModelManager:
             번역 결과를 담은 사전입니다.
         """
         converted_src_lan, converted_tgt_lan = convert_language(self.language_mapper, src_lan, tgt_lan)
-        result = self.model.translate(query, converted_src_lan, converted_tgt_lan)
+        result = self.model.translate(query, converted_src_lan, converted_tgt_lan, **kwargs)
         return result
 
-    def change_service(self, service: str) -> None:
+    def change_service(self, service: str, **kwargs) -> None:
         """
         서비스를 변경하고 해당 서비스에 맞는 API 객체를 새롭게 초기화합니다.
 
@@ -104,4 +103,4 @@ class ModelManager:
         service : str
             변경할 서비스의 이름입니다.
         """
-        self.model = self.initialize_model(service)
+        self.model = self.initialize_model(service, **kwargs)

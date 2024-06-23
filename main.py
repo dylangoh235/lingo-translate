@@ -17,7 +17,7 @@ class RequestBody(BaseModel):
     query: str
     sourceLan: str
     targetLan: str
-    kargs: dict | None
+    kwargs: dict | None
 
 
 class SuggestionBody(BaseModel):
@@ -27,12 +27,6 @@ class SuggestionBody(BaseModel):
     cntxt_len: int
     text: str
     abbreviation: bool
-
-
-class ResponseBody(BaseModel):
-    score: int
-    query: str
-
 
 app = FastAPI()
 translator = Translator()
@@ -81,6 +75,7 @@ async def translate(request: RequestBody):
         src_lan=request.sourceLan,
         tgt_lan=request.targetLan,
         service=request.service,
+        **request.kwargs
     )
     return response
 

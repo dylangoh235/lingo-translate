@@ -74,7 +74,7 @@ class Translator:
         else:
             raise ServiceNotFoundException("지원하지 않는 서비스 입니다.")
 
-        manager.change_service(service)
+        manager.change_service(service, **kwargs)
 
         result = manager.translate(query, src_lan, tgt_lan, **kwargs)
         if "output" not in result:

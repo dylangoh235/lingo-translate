@@ -40,12 +40,11 @@ class APIManager:
 
     API_MAPPING: Dict[str, str] = API_SERVICE_MAPPING_NAME
 
-    def __init__(self, **kwargs: Dict[str, Any]) -> None:
-        self.kwargs = kwargs
+    def __init__(self) -> None:
         self.api = None
         self.language_mapper = None
 
-    def initialize_api(self, service: str) -> AbstractAPI:
+    def initialize_api(self, service: str, **kwargs) -> AbstractAPI:
         """
         주어진 서비스 이름에 해당하는 API 클래스를 초기화하고 인스턴스를 생성합니다.
 
@@ -68,13 +67,13 @@ class APIManager:
             api_module_name = self.API_MAPPING[service]
             self.language_mapper = get_language_mapper(service)
             api_class = get_class_from_module(api_modules, api_module_name, AbstractAPI)
-            return api_class(**self.kwargs)
+            return api_class(**kwargs)
         else:
             raise ServiceNotFoundException(
                 f"해당 {service}가  존재하지 않는 서비스 입니다."
             )
 
-    def translate(self, query: str, src_lan: str, tgt_lan: str) -> dict:
+    def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:
         """
         주어진 텍스트를 번역하여 결과를 반환합니다.
 
@@ -94,10 +93,10 @@ class APIManager:
         """
         converted_src_lan, converted_tgt_lan = convert_language(self.language_mapper, src_lan, tgt_lan)
 
-        result = self.api.translate(query, converted_src_lan, converted_tgt_lan)
+        result = self.api.translate(query, converted_src_lan, converted_tgt_lan, **kwargs)
         return result
 
-    def change_service(self, service: str) -> None:
+    def change_service(self, service: str, **kwargs) -> None:
         """
         서비스를 변경하고 해당 서비스에 맞는 API 객체를 새롭게 초기화합니다.
 
@@ -106,4 +105,4 @@ class APIManager:
         service : str
             변경할 서비스의 이름입니다.
         """
-        self.api = self.initialize_api(service)
+        self.api = self.initialize_api(service, **kwargs)
