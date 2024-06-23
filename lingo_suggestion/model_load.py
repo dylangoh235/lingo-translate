@@ -22,47 +22,40 @@ class Abstract:
         self.text = text
         self.cntxt_len = cntxt_len
 
+
 class ModelLoader:
-
+    
     MODEL_MAPPING: Dict[str, str] = SUGGESTION_SERVICE_MAPPING_NAME
-
     def __init__(self, model: str):
         self.model = model
 
-    def get_class_from_module(self, modules, name):
-        module_class = getattr(modules, name, None)
-        print("Get Attribute...")
-        print(module_class)
+    def get_class_from_module(self, module, name):
+        module_class = getattr(module, name, None)
         if module_class is None:
             raise ModuleNotFoundException(f"'{name}' class does not exist.")
         return module_class
 
     def load_class(self, module_file, class_name):
         try:
-            module_path = os.path.join("./lingo_suggestion/models", f"{module_file}.py")
-            print("Find out module path...")
+            module_path = os.path.abspath(os.path.join("lingo_suggestion", "models", f"{module_file}.py"))
+            
             if not os.path.exists(module_path):
                 raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exist.")
-            
-            print("Get spec...")
-            spec = importlib.util.spec_from_file_location(module_file, module_path)
-            print("Get module...")
-            module = importlib.util.module_from_spec(spec)
 
-            print("Get spec loader from module...")
-            spec.loader.exec_module(module)
-            print("Prepare to get class from Module...")
+            # Get the package name for relative import
+            package_name = "lingo_suggestion.models"
             
+            module = importlib.import_module(f"{package_name}.{module_file}")
             model_class = self.get_class_from_module(module, class_name)
+            
             return model_class
 
-        except ValueError:
-            raise ValueError("Input should be in the format 'module_file : class_name'.")
-        except ModuleNotFoundException as e:
-            print(f"ModuleNotFoundException: {e}")
+        except ModuleNotFoundException as mnfe:
+            print(f"ModuleNotFoundException: {mnfe}")
+            raise
         except Exception as e:
             print(f"An error occurred: {e}")
-        return None
+            raise
 
     def model_return(self):
         print(f"Model: {self.model}, Model Mapping: {self.MODEL_MAPPING}")
