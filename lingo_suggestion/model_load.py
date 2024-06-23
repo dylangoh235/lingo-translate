@@ -31,6 +31,8 @@ class ModelLoader:
 
     def get_class_from_module(self, modules, name):
         module_class = getattr(modules, name, None)
+        print("Get Attribute...")
+        print(module_class)
         if module_class is None:
             raise ModuleNotFoundException(f"'{name}' class does not exist.")
         return module_class
@@ -38,12 +40,14 @@ class ModelLoader:
     def load_class(self, module_file, class_name):
         try:
             module_path = os.path.join("./lingo_suggestion/models", f"{module_file}.py")
+            print("Find out module path...")
             if not os.path.exists(module_path):
                 raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exist.")
             
             spec = importlib.util.spec_from_file_location(module_file, module_path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
+            print("Prepare to get class from Module...")
             
             model_class = self.get_class_from_module(module, class_name)
             return model_class
@@ -59,6 +63,7 @@ class ModelLoader:
     def model_return(self):
         print(f"Model: {self.model}, Model Mapping: {self.MODEL_MAPPING}")
         if self.model in self.MODEL_MAPPING:
+            print("Model load starting..")
             model_class = self.load_class(self.model, self.MODEL_MAPPING[self.model])
             if model_class:
                 return model_class()
