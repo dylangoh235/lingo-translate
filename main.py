@@ -5,6 +5,7 @@ import lingo_translate.exception as exception
 from lingo_suggestion.suggestion import synonym_suggestion
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
@@ -39,27 +40,27 @@ translator = Translator()
 
 @app.exception_handler(exception.InvalidLanguageCodeException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.LanguageMapperNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.OutputFormatNotValidException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.ModuleNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.ServiceNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.get("/translate")
