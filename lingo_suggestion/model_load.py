@@ -44,8 +44,12 @@ class ModelLoader:
             if not os.path.exists(module_path):
                 raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exist.")
             
+            print("Get spec...")
             spec = importlib.util.spec_from_file_location(module_file, module_path)
+            print("Get module...")
             module = importlib.util.module_from_spec(spec)
+
+            print("Get spec loader from module...")
             spec.loader.exec_module(module)
             print("Prepare to get class from Module...")
             
