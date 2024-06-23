@@ -9,7 +9,6 @@ class DeepLTranslateAPI(AbstractAPI):
     """
 
     def __init__(self, **kwargs) -> None:
-        tier = kwargs.get('tier')
         self.endpoint = "https://api-free.deepl.com/translate" if kwargs.get("tier", None) == "free" else None
         self.translator = deepl.Translator(
             auth_key=os.getenv("DEEPL_AUTH_KEY"), server_url=self.endpoint
