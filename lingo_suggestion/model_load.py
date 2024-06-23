@@ -28,41 +28,43 @@ class ModelLoader:
 
     def __init__(self, model: str):
         self.model = model
-        
+
     def get_class_from_module(self, modules, name):
         module_class = getattr(modules, name, None)
         if module_class is None:
             raise ModuleNotFoundException(f"'{name}' class does not exist.")
-
         return module_class
 
     def load_class(self, module_file, class_name):
         try:
             module_path = os.path.join("./lingo_suggestion/models", f"{module_file}.py")
-            
             if not os.path.exists(module_path):
-                raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exsit.")
-
+                raise ModuleNotFoundException(f"Module file '{module_file}.py' does not exist.")
+            
             spec = importlib.util.spec_from_file_location(module_file, module_path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-
-            model_class = self.get_class_from_module(module, class_name)
             
+            model_class = self.get_class_from_module(module, class_name)
             return model_class
 
         except ValueError:
             raise ValueError("Input should be in the format 'module_file : class_name'.")
         except ModuleNotFoundException as e:
-            print(e)
+            print(f"ModuleNotFoundException: {e}")
         except Exception as e:
             print(f"An error occurred: {e}")
+        return None
 
     def model_return(self):
-        print(self.model, self.MODEL_MAPPING)
+        print(f"Model: {self.model}, Model Mapping: {self.MODEL_MAPPING}")
         if self.model in self.MODEL_MAPPING:
             model_class = self.load_class(self.model, self.MODEL_MAPPING[self.model])
-            return model_class()
+            if model_class:
+                return model_class()
+            else:
+                print(f"Failed to load class for model {self.model}")
+                raise ModuleNotFoundException(f"Failed to load class for model {self.model}")
         else:
             raise ServiceNotFoundException(
                 f"{self.model} does not exist in yaml, please add a model or change the name"
