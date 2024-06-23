@@ -3,4 +3,5 @@ lingo.egg-info/
 */__pycache__
 */*/__pycache__
 .env
-lingo_suggestion/models/checkpoints
+lingo_suggestion/models/checkpoints/llama-2-7b-chat.Q2_K.gguf
+lingo_suggestion/models/checkpoints/llama-2-13b-chat.Q3_K_M.gguf
