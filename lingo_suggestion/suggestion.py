@@ -37,6 +37,7 @@ class synonym_suggestion():
         # self.cntxt_len = cntxt_len
         # self.text = text
         # self.abbreviation = abbreviation
+        print(type(target_word))
         if type(target_word) == int:
             target_word = find_word_by_index(text=text, index=target_word)
             
