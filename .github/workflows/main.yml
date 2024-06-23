@@ -41,6 +41,9 @@ jobs:
           password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
+            sudo pip install --upgrade langchain_core langchain
+            sudo pip install langchain_community
+
             # Check if the container is running
             if [ $(sudo docker ps -q -f name=${{ secrets.DOCKER_IMAGE_NAME }}) ]; then
               echo "Stopping and removing existing container..."
