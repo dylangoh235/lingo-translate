@@ -182,16 +182,16 @@ jupyterlab-widgets==3.0.10
     # via ipywidgets
 kiwisolver==1.4.5
     # via matplotlib
-langchain==0.1.12
+langchain==0.2.3
     # via lingo (pyproject.toml)
-langchain-community==0.0.28
+langchain-community==0.2.4
     # via langchain
-langchain-core==0.1.32
+langchain-core==0.2.5
     # via
     #   langchain
     #   langchain-community
     #   langchain-text-splitters
-langchain-text-splitters==0.0.1
+langchain-text-splitters==0.2.1
     # via langchain
 langsmith==0.1.28
     # via
@@ -200,7 +200,7 @@ langsmith==0.1.28
     #   langchain-core
 lightning-utilities==0.11.2
     # via torchmetrics
-llama-cpp-python==0.2.77
+llama-cpp-python==0.2.78
     # via lingo (pyproject.toml)
 markdown==3.6
     # via tensorboard
@@ -313,14 +313,14 @@ pyasn1==0.6.0
     #   rsa
 pyasn1-modules==0.4.0
     # via google-auth
-pydantic==2.6.4
+pydantic==2.7.3
     # via
     #   fastapi
     #   langchain
     #   langchain-core
     #   langsmith
     #   openai
-pydantic-core==2.16.3
+pydantic-core==2.18.4
     # via pydantic
 pygments==2.17.2
     # via
