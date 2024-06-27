@@ -12,6 +12,7 @@ import uvicorn
 
 load_dotenv()
 
+
 class RequestBody(BaseModel):
     service: str
     query: str
@@ -27,6 +28,7 @@ class SuggestionBody(BaseModel):
     cntxt_len: int
     text: str
     abbreviation: bool
+
 
 app = FastAPI()
 translator = Translator()
@@ -75,19 +77,25 @@ async def translate(request: RequestBody):
         src_lan=request.sourceLan,
         tgt_lan=request.targetLan,
         service=request.service,
-        **request.kwargs
+        **request.kwargs,
     )
     return response
 
 
 @app.get("/lingo-ai/api/model-list")
 async def model_list():
-    return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME] + [SUGGESTION_SERVICE_MAPPING_NAME] 
+    data = {
+        "models": {
+            "translationModel": list(MODEL_SERVICE_MAPPING_NAME.keys())
+            + list(API_SERVICE_MAPPING_NAME.keys()),
+            "suggestionModel": list(SUGGESTION_SERVICE_MAPPING_NAME.keys()),
+        },
+    }
+    return data
 
 
 @app.get("/lingo-ai/api/suggestion")
 async def suggestion(request: SuggestionBody):
-    
     """
     model : string, choose model to suggest synonym
 
@@ -107,7 +115,7 @@ async def suggestion(request: SuggestionBody):
         sentence=request.sentence,
         cntxt_len=request.cntxt_len,
         text=request.text,
-        abbreviation=request.abbreviation
+        abbreviation=request.abbreviation,
     )
 
     response = {"suggestions": synonyms}
