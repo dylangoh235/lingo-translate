@@ -57,7 +57,7 @@ async def unicorn_exception_handler(request, exc):
     return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
-@app.get("/translate")
+@app.get("/lingo-ai/api/translate")
 async def translate(request: RequestBody):
     """
     {
@@ -80,12 +80,12 @@ async def translate(request: RequestBody):
     return response
 
 
-@app.get("/model-list")
+@app.get("/lingo-ai/api/model-list")
 async def model_list():
     return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME] + [SUGGESTION_SERVICE_MAPPING_NAME] 
 
 
-@app.get("/suggestion")
+@app.get("/lingo-ai/api/suggestion")
 async def suggestion(request: SuggestionBody):
     
     """
