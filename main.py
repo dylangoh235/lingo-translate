@@ -7,7 +7,9 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 
-
+with open("temp_schema.json", mode="rt", encoding="utf-8") as patched_schema:
+    schema_to_patch = json.load(patched_schema)
+    
 class RequestBody(BaseModel):
     service: str
     query: str
