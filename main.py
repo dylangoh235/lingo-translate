@@ -13,9 +13,6 @@ import uvicorn
 
 load_dotenv()
 
-with open("temp_schema.json", mode="rt", encoding="utf-8") as patched_schema:
-    schema_to_patch = json.load(patched_schema)
-
 class RequestBody(BaseModel):
     service: str
     query: str
@@ -62,7 +59,7 @@ async def unicorn_exception_handler(request, exc):
     return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
-@app.get("/lingo-ai/api/translate")
+@app.post("/lingo-ai/api/translate")
 async def translate(request: RequestBody):
     """
     {
@@ -97,7 +94,7 @@ async def model_list():
     return data
 
 
-@app.get("/lingo-ai/api/suggestion")
+@app.post("/lingo-ai/api/suggestion")
 async def suggestion(request: SuggestionBody):
 
     """
