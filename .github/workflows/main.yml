@@ -62,3 +62,7 @@ jobs:
             sudo docker run --network=host -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
             --name ${{ secrets.DOCKER_IMAGE_NAME }} \
             -d ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Copy the model weights (i.e., checkpoints) to checkpoints directory
+            sudo docker cp ~/llama-2-7b-chat.Q2_K.gguf ${{ secrets.DOCKER_IMAGE_NAME }}:/lingo/lingo_suggestion/models/checkpoints/
+            sudo docker cp ~/llama-2-13b-chat.Q3_K_M.gguf ${{ secrets.DOCKER_IMAGE_NAME }}:/lingo/lingo_suggestion/models/checkpoints/
