@@ -10,5 +10,9 @@ RUN python3 -m pip install pip-tools &&\
     pip-compile -o requirements.txt pyproject.toml &&\
     pip-sync
 
+# 추가 패키지 설치
+RUN pip install langchain_community &&\
+    pip install --upgrade langchain_core langchain
+
 # 서버 실행
-ENTRYPOINT ["python", "main.py"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

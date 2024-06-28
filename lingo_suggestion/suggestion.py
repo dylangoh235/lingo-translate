@@ -1,7 +1,7 @@
-from model_load import ModelLoader
-from context import get_context, find_word_by_index
-from abbreviation.convert_abbrv import *
-from exception import (
+from lingo_suggestion.model_load import ModelLoader
+from lingo_suggestion.context import get_context, find_word_by_index
+from lingo_suggestion.abbreviation.convert_abbrv import *
+from lingo_suggestion.exception import (
     ServiceNotFoundException,
     OutputFormatNotValidException,
 )
@@ -37,6 +37,7 @@ class synonym_suggestion():
         # self.cntxt_len = cntxt_len
         # self.text = text
         # self.abbreviation = abbreviation
+        print(type(target_word))
         if type(target_word) == int:
             target_word = find_word_by_index(text=text, index=target_word)
             

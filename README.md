@@ -1,3 +1,4 @@
+
 ```
 lingo-translate
 ├───
@@ -53,4 +54,3 @@ Service란 번역을 위한 라이브러리 이름/ 모델 이름을 말한다.
 
 3. 해당 파일 안에 "호출할 클래스 이름"과 같은 클래스를 선언한다. 이때 Abstract 모델을 상속받아야 한다.
    ![alt text](<image/Screenshot 2024-06-14 at 13.02.44.png>)
-

@@ -14,4 +14,8 @@ model_services:
   huggingface_nllb: HuggingFaceNllbModel
   torch_transformer: TorchTransformerModel
 
+suggestion_services:
+  llama2_7b: llama2_7b
+  llama2_13b: llama2_13b
+
 

@@ -4,7 +4,6 @@ from transformers.tokenization_utils import TruncationStrategy
 import torch
 
 
-# 딥러닝 모델 클래스
 class HuggingFaceTranslation:
     """
     Huggingface에서 제공하는 모델을 활용하여 번역
@@ -124,8 +123,6 @@ class HuggingFaceNllbModel(HuggingFaceTranslation, AbstractModel):
         back_perplexity = self.calculate_perplexity(back_model_inputs["input_ids"])
 
         return {
-            "output": translation_text,
-            "reverse_translation": back_translation_text,
-            "perplexity": perplexity,
-            "reverse_perplexity": back_perplexity,
+            "output": translation_text[0]['generated_text'],
+            "score": perplexity,
         }

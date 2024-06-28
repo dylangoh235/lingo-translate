@@ -1,21 +1,27 @@
 from lingo_translate.manager import Translator
 from lingo_translate.mapper import API_SERVICE_MAPPING_NAME, MODEL_SERVICE_MAPPING_NAME
+from lingo_suggestion.model_load import SUGGESTION_SERVICE_MAPPING_NAME
 import lingo_translate.exception as exception
 from lingo_suggestion.suggestion import synonym_suggestion
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
+from dotenv import load_dotenv
 import uvicorn
+
+
+load_dotenv()
 
 with open("temp_schema.json", mode="rt", encoding="utf-8") as patched_schema:
     schema_to_patch = json.load(patched_schema)
-    
+
 class RequestBody(BaseModel):
     service: str
     query: str
     sourceLan: str
     targetLan: str
-    kargs: dict | None
+    kwargs: dict | None
 
 
 class SuggestionBody(BaseModel):
@@ -27,41 +33,36 @@ class SuggestionBody(BaseModel):
     abbreviation: bool
 
 
-class ResponseBody(BaseModel):
-    score: int
-    query: str
-
-
 app = FastAPI()
 translator = Translator()
 
 
 @app.exception_handler(exception.InvalidLanguageCodeException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.LanguageMapperNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.OutputFormatNotValidException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.ModuleNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
 @app.exception_handler(exception.ServiceNotFoundException)
 async def unicorn_exception_handler(request, exc):
-    return JSONResponse(status_code=400, content={exc})
+    return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
-@app.get("/translate")
+@app.get("/lingo-ai/api/translate")
 async def translate(request: RequestBody):
     """
     {
@@ -79,38 +80,46 @@ async def translate(request: RequestBody):
         src_lan=request.sourceLan,
         tgt_lan=request.targetLan,
         service=request.service,
+        **request.kwargs,
     )
     return response
 
 
-@app.get("/model-list")
+@app.get("/lingo-ai/api/model-list")
 async def model_list():
-    return [MODEL_SERVICE_MAPPING_NAME] + [API_SERVICE_MAPPING_NAME]
+    data = {
+        "models": {
+            "translationModel": list(MODEL_SERVICE_MAPPING_NAME.keys())
+            + list(API_SERVICE_MAPPING_NAME.keys()),
+            "suggestionModel": list(SUGGESTION_SERVICE_MAPPING_NAME.keys()),
+        },
+    }
+    return data
 
 
-@app.get("/suggestion")
+@app.get("/lingo-ai/api/suggestion")
 async def suggestion(request: SuggestionBody):
-    
-        """
-        model : string, choose model to suggest synonym
 
-        target_word : integer, index of target word
+    """
+    model : string, choose model to suggest synonym
 
-        sentence : bool, choose sentence-by-sentence or word-by-word
+    target_word : integer, index of target word
 
-        cntxt_len : integer, number of units to check context
+    sentence : bool, choose sentence-by-sentence or word-by-word
 
-        text : string, paragraph including target word
+    cntxt_len : integer, number of units to check context
 
-        abbreviation : bool, whether or not to abbreviation conversion to add synonym suggestion
-        """
-        
+    text : string, paragraph including target word
+
+    abbreviation : bool, whether or not to abbreviation conversion to add synonym suggestion
+    """
+
     synonyms = synonym_suggestion(request.model).suggestion(
         target_word=request.targetWord,
         sentence=request.sentence,
         cntxt_len=request.cntxt_len,
         text=request.text,
-        abbreviation=request.abbreviation
+        abbreviation=request.abbreviation,
     )
 
     response = {"suggestions": synonyms}

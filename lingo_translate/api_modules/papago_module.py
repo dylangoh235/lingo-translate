@@ -25,6 +25,4 @@ class NaverPapagoAPI(AbstractAPI):
         rescode = response.getcode()
         if rescode == 200:
             response_body = response.read()
-            print(response_body.decode("utf-8"))
-            # {'output': '{"message":{"result":{"srcLangType":"en","tarLangType":"ko","translatedText":"안녕하세요."}}}'}
             return {"output": response_body.decode("utf-8")}

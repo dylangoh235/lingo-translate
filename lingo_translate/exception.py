@@ -1,18 +1,23 @@
-class ModuleNotFoundException(Exception):
+class LingoException(Exception):
+    def __repr__(self):
+        return f'{self.__class__.__name__}: {self.args[0] if self.args else ""}'
+
+
+class ModuleNotFoundException(LingoException):
     pass
 
 
-class ServiceNotFoundException(Exception):
+class ServiceNotFoundException(LingoException):
     pass
 
 
-class OutputFormatNotValidException(Exception):
+class OutputFormatNotValidException(LingoException):
     pass
 
 
-class LanguageMapperNotFoundException(Exception):
+class LanguageMapperNotFoundException(LingoException):
     pass
 
 
-class InvalidLanguageCodeException(Exception):
+class InvalidLanguageCodeException(LingoException):
     pass

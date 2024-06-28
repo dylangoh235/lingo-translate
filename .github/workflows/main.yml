@@ -2,9 +2,9 @@
 name: AI Translate and Suggestion Server Deploy
 
 on:
-  # dev branch에 push or pull request 발생 시
+  # Trigger on push or pull request to the main branch
   push:
-    branches: ["deploy"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -12,11 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # 실행될 jobs 순서대로 명시
     steps:
       - name: Checkout
-        # uses keyword를 통해 action 불러오기
-        # 여기서는 해당 repository로 checkout해 접근할 수 있는 action을 불러온다. v3도 있으니 경우에 따라 적용할 것.
         uses: actions/checkout@v2
 
       - name: DockerHub Login
@@ -25,28 +22,43 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Docker Image Build
+      - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
 
-      - name: Docker Push
+      - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
-      - name: lab deploy server 접속 및 app 실행
+      - name: create dotenv
+        run: |
+          touch .env
+          echo "DEEPL_AUTH_KEY=${{ secrets.DEEPL_AUTH_KEY }}" > .env
+
+      - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.6
-        env:
-          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
           password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
           port: ${{ secrets.DEPLOY_PORT }}
-
           script: |
-            sudo docker kill ${{ secrets.DOCKER_IMAGE_NAME }}
-            sudo docker rm -f ${{ secrets.DOCKER_IMAGE_NAME }}
-            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Check if the container is running
+            if [ $(sudo docker ps -q -f name=${{ secrets.DOCKER_IMAGE_NAME }}) ]; then
+              echo "Stopping and removing existing container..."
+              sudo docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
+              sudo docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
+            fi
+
+            # Remove any existing image
+            if [ $(sudo docker images -q ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}) ]; then
+              echo "Removing existing image..."
+              sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            fi
+
+            # Pull the latest image
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
+            # Run the new container
             sudo docker run --network=host -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
             --name ${{ secrets.DOCKER_IMAGE_NAME }} \
             -d ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}

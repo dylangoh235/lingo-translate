@@ -62,7 +62,7 @@ class Translator:
         Returns
         -------
         output : dict
-            번역 결과와 관련 정보를 담은 딕셔너리입니다.
+            번역 결과와 점수를 반환합니다. 점수를 제공하지 않으면 -2로 반환합니다.
             예시: {"output": "Hello", "score": None}
 
         """
@@ -74,11 +74,11 @@ class Translator:
         else:
             raise ServiceNotFoundException("지원하지 않는 서비스 입니다.")
 
-        manager.change_service(service)
+        manager.change_service(service, **kwargs)
 
         result = manager.translate(query, src_lan, tgt_lan, **kwargs)
         if "output" not in result:
             raise OutputFormatNotValidException("output이 결과에 없습니다.")
 
-        response = {"output": result["output"], "score": result.get("score", 0)}
+        response = {"output": result["output"], "score": result.get("score", -2)}
         return response

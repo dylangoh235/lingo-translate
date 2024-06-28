@@ -4,20 +4,23 @@ from langchain_community.llms import LlamaCpp
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
-class llama2_7b():
-    
+class llama2_7b:
+
     def __init__(self) -> None:
         
-        self.model = LlamaCpp(
-        model_path="./models/checkpoint/"+"llama-2-7b-chat.Q2_K.gguf",
-        n_gpu_layers=50,
-        n_batch=2000,
-        temperature=0,
-        #callback_manager=CallbackManager([]),
-        callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
-        verbose=False,
-        n_ctx=1800,
-        )        
+        try:
+            self.model = LlamaCpp(
+            model_path="./lingo_suggestion/models/checkpoints/"+"llama-2-7b-chat.Q2_K.gguf",
+            n_gpu_layers=50,
+            n_batch=2000,
+            temperature=0,
+            #callback_manager=CallbackManager([]),
+            callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
+            verbose=False,
+            n_ctx=1800,
+            )    
+        except ValueError:
+            raise ValueError("Model weight does not exist or name error.")    
 
     def extract_medical_terms(self, text) -> list:
         """
