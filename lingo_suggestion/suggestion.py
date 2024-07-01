@@ -30,7 +30,7 @@ class synonym_suggestion():
         self.model = ModelLoader(model).model_return()
     
     def suggestion(self, target_word, sentence=True, 
-                   cntxt_len=0, text="", abbreviation=False) -> list:
+                   cntxt_len=0, text="", abbreviation=True) -> list:
         
         # self.target_word = target_word
         # self.sentence = sentence

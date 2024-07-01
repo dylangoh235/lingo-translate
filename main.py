@@ -10,8 +10,8 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
 
-load_dotenv()
 
+load_dotenv()
 
 class RequestBody(BaseModel):
     service: str
@@ -59,7 +59,7 @@ async def unicorn_exception_handler(request, exc):
     return JSONResponse(status_code=400, content=jsonable_encoder({"detail": str(exc)}))
 
 
-@app.get("/lingo-ai/api/translate")
+@app.post("/lingo-ai/api/translate")
 async def translate(request: RequestBody):
     """
     {
@@ -94,8 +94,9 @@ async def model_list():
     return data
 
 
-@app.get("/lingo-ai/api/suggestion")
+@app.post("/lingo-ai/api/suggestion")
 async def suggestion(request: SuggestionBody):
+
     """
     model : string, choose model to suggest synonym
 
