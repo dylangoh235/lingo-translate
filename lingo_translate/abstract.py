@@ -8,7 +8,7 @@ class AbstractAPI(ABC):
 
     @abstractmethod
     def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:
-        pass
+        raise NotImplementedError
 
 
 class AbstractModel(ABC):
@@ -18,4 +18,4 @@ class AbstractModel(ABC):
 
     @abstractmethod
     def translate(self, text: str, src_lang: str, tgt_lang: str, **kwargs) -> dict:
-        pass
+        raise NotImplementedError
