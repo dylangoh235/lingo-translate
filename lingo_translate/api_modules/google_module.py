@@ -10,7 +10,7 @@ class GoogleTranslateAPI(AbstractAPI):
     """
 
     def __init__(self, **kwargs) -> None:
-        self.auth_key = os.getenv("GOOGLE_CREDENTIALS")
+        self.auth_key = os.getenv("GOOGLE_CREDENTIALS", kwargs.get("auth_key", None))
         self.translator = google_translate.Client(credentials=self.auth_key)
 
     def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:

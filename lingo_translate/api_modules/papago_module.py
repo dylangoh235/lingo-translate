@@ -10,8 +10,8 @@ class NaverPapagoAPI(AbstractAPI):
     """
 
     def __init__(self, **kwargs) -> None:
-        self.client_id = os.getenv("NAVER_CLIENT_ID")
-        self.client_secret = os.getenv("NAVER_CLIENT_SECRET")
+        self.client_id = os.getenv("NAVER_CLIENT_ID", kwargs.get("client_id", None))
+        self.client_secret = os.getenv("NAVER_CLIENT_SECRET", kwargs.get("client_secret", None))
         self.url = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation"
 
     def translate(self, query: str, src_lan: str, tgt_lan: str, **kwargs) -> dict:
